@@ -135,7 +135,55 @@ window.onload = function () {
     }
 
     //返回顶部
-    
+    var return_top=document.getElementById("return_top");
+    var rt_begin=0,rt_end=0;timer2=null;
+
+    var nav=document.getElementById("navigation");
+
+    window.onscroll=function(){
+        scroll_top=scroll_v().top;
+        scroll_top>0?(return_top.style.display="block"):(return_top.style.display="none");
+        rt_begin=scroll_top;
+
+        return_top.onclick=function(){
+            clearInterval(timer2);
+
+            timer2=setInterval(function(){
+                rt_begin=rt_begin+(rt_end-rt_begin)*0.1;
+                window.scrollTo(0,rt_begin);
+
+                if(Math.round(rt_begin)===rt_end){
+                    clearInterval(timer2);
+                }
+            },20)
+        }
+        //导航吸顶
+        if(this.document.documentElement.scrollTop>nav.offsetTop){
+            nav.className="header nav";
+        }else{
+            nav.className="header";
+        }
+
+    }
+
+    function scroll_v(){
+        if(window.pageYOffset!==null){
+            return {
+                top:window.pageYOffset,
+                left:window.pageXOffset
+            } 
+        } else if(document.compatMode==="CSS1Compat"){
+            return {
+                top:document.documentElement.scrollTop,
+                left:document.documentElement.scrollLeft
+            }
+        } else{
+            return {
+                top:document.body.scrollTop,
+                left:document.body.scrollLeft
+            }
+        }
+    }
 
 }
 
